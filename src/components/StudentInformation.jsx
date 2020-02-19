@@ -13,16 +13,15 @@ class StudentInformation extends Component {
         {isLoading ? (
           <p>Loading...</p>
         ) : (
-          <div>
-            {" "}
+          <>
             <header>
               <h2>{student.name}</h2>
             </header>
             <section>
               <p>{student.currentBlock}</p>
               <p>{student.startingCohort}</p>
-            </section>{" "}
-          </div>
+            </section>
+          </>
         )}
       </div>
     );
@@ -35,10 +34,11 @@ class StudentInformation extends Component {
   fetchStudent = () => {
     axios
       .get(
-        "https://nc-student-tracker.herokuapp.com/api/students/5e3d8417099f3a00170c109a"
+        `https://nc-student-tracker.herokuapp.com/api/students/${this.props.student_id}`
       )
-      .then(({ data: student }) => {
-        console.log(student);
+      .then(({ data: { student } }) => {
+        const currentBlock = student.blockHistory.slice(-1)[0].name;
+        student.currentBlock = currentBlock;
         this.setState({ student, isLoading: false });
       });
   };

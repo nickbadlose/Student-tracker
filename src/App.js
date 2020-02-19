@@ -14,7 +14,7 @@ function App() {
       <Router>
         <Homepage path="/" />
         <Students path="/students" />
-        <StudentInformation path="/students/:id" />
+        <StudentInformation path="/students/:student_id" />
       </Router>
     </main>
   );
