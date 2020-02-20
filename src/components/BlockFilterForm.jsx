@@ -2,7 +2,7 @@ import React, { Component } from "react";
 
 class BlockFilterForm extends Component {
   state = {
-    filterByBlockInput: "false"
+    filterByBlockInput: ""
   };
 
   handleSubmit = event => {
@@ -15,15 +15,21 @@ class BlockFilterForm extends Component {
     });
   };
 
+  componentDidUpdate(prevProps, prevState) {
+    if (prevState.filterByBlockInput !== this.state.filterByBlockInput) {
+      this.props.fetchStudents(this.state.filterByBlockInput);
+    }
+  }
+
   render() {
+    const { handleSubmit, handleChange } = this;
+    const { filterByBlockInput } = this.state;
     return (
-      <form onSubmit={this.handleSubmit}>
+      <form onSubmit={handleSubmit}>
         <label>
           Filter by block
-          <select
-            onChange={this.handleChange}
-            value={this.state.filterByBlockInput}
-          >
+          <select onChange={handleChange} value={filterByBlockInput}>
+            <option value="">all Northcoders</option>
             <option value="false">all current students</option>
             <option value="fun">fundamentals</option>
             <option value="be">back end</option>
