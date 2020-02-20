@@ -32,9 +32,42 @@ class BlockReview extends Component {
       this.filterByBlock(this.state.block);
     }
   };
+  setStudentReview = (status, student_id) => {
+    this.setState(currentState => {
+      const reviewedStudents = currentState.students.map(student => {
+        const freshStudent = { ...student };
+        if (freshStudent._id === student_id) {
+          freshStudent.blockStatus = status;
+        }
+        return freshStudent;
+      });
+      return { students: reviewedStudents };
+    });
+  };
+
+  handleSubmit = event => {
+    event.preventDefault();
+    const { students } = this.state;
+    const allStudentsReviewed = students.every(student => {
+      return student.blockStatus;
+    });
+    if (allStudentsReviewed) {
+      students.forEach(student => {
+        this.patchStudent(student._id, student.BlockStatus);
+      });
+    }
+  };
+
+  patchStudent = (student_id, progress) => {
+    axios.patch(
+      `https://nc-student-tracker.herokuapp.com/api/students${student_id}`,
+      { params: { progress } }
+    );
+  };
+
   render() {
     const { students, block } = this.state;
-    const { handleChange } = this;
+    const { handleChange, setStudentReview, handleSubmit } = this;
     return (
       <div>
         <header>
@@ -51,6 +84,9 @@ class BlockReview extends Component {
             </select>
           </label>
         </form>
+        <form onSubmit={handleSubmit}>
+          <button>Graduate all relevant students</button>
+        </form>
         <ul>
           {students.map(student => {
             return (
@@ -58,6 +94,7 @@ class BlockReview extends Component {
                 student={student}
                 key={student._id}
                 block={block}
+                setStudentReview={setStudentReview}
               />
             );
           })}

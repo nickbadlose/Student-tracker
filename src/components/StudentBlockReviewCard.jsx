@@ -23,18 +23,26 @@ class StudentBlockReviewCard extends React.Component {
   };
 
   render() {
+    const { setStudentReview, student } = this.props;
+    const { blockCount } = this.state;
     return (
       <div>
-        <h3>{this.props.student.name}</h3>
-        <h4>block count: {this.state.blockCount}</h4>
-        <label>
-          Resit
-          <input type="radio" id="resit" name="reviewStatus"></input>
-        </label>
-        <label>
-          Pass
-          <input type="radio" id="pass" name="reviewStatus"></input>
-        </label>
+        <h3>{student.name}</h3>
+        <h4>block count: {blockCount}</h4>
+        <form
+          onChange={event => {
+            setStudentReview(event.target.id, student._id);
+          }}
+        >
+          <label>
+            Resit
+            <input type="radio" id="false" name="reviewStatus"></input>
+          </label>
+          <label>
+            Pass
+            <input type="radio" id="true" name="reviewStatus"></input>
+          </label>
+        </form>
       </div>
     );
   }
