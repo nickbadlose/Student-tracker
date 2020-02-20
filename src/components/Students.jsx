@@ -56,6 +56,10 @@ class Students extends Component {
         navigate(`/students/${student._id}`);
       });
   };
+
+  deleteStudent = student_id => {
+    console.log(student_id);
+  };
 }
 
 export default Students;

@@ -6,6 +6,7 @@ import Homepage from "./components/Homepage";
 import Students from "./components/Students";
 import { Router } from "@reach/router";
 import StudentInformation from "./components/StudentInformation";
+import BlockReview from "./components/BlockReview";
 
 function App() {
   return (
@@ -15,6 +16,7 @@ function App() {
         <Homepage path="/" />
         <Students path="/students" />
         <StudentInformation path="/students/:student_id" />
+        <BlockReview path="/blocks" />
       </Router>
     </main>
   );
