@@ -5,7 +5,8 @@ import axios from "axios";
 class BlockReview extends Component {
   state = {
     students: [],
-    block: "fun"
+    block: "fun",
+    blockUnderReview: false
   };
 
   handleChange = event => {
@@ -28,8 +29,13 @@ class BlockReview extends Component {
     this.filterByBlock(this.state.block);
   };
   componentDidUpdate = (prevProps, prevState) => {
+    console.log("block review updating");
     if (prevState.block !== this.state.block) {
       this.filterByBlock(this.state.block);
+    } else if (prevState.blockUnderReview !== this.state.blockUnderReview) {
+      this.filterByBlock(this.state.block);
+    } else if (this.state.blockUnderReview === true) {
+      this.setState({ blockUnderReview: false });
     }
   };
   setStudentReview = (status, student_id) => {
@@ -56,8 +62,18 @@ class BlockReview extends Component {
         return this.patchStudent(student._id, student.blockStatus);
       });
       return Promise.all(studentPromises).then(patchedStudents => {
-        this.filterByBlock(block);
+        return this.setState(() => {
+          return {
+            blockUnderReview: true
+          };
+        });
       });
+      // .then(() => {
+      //   return this.filterByBlock(block);
+      // })
+      // .then(() => {
+      //   return this.setState({ blockUnderReview: false });
+      // });
     }
   };
 
@@ -72,7 +88,7 @@ class BlockReview extends Component {
   };
 
   render() {
-    const { students, block } = this.state;
+    const { students, block, blockUnderReview } = this.state;
     const { handleChange, setStudentReview, handleSubmit } = this;
     return (
       <div>
@@ -101,6 +117,7 @@ class BlockReview extends Component {
                 key={student._id}
                 block={block}
                 setStudentReview={setStudentReview}
+                blockUnderReview={blockUnderReview}
               />
             );
           })}

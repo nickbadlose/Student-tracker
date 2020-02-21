@@ -8,7 +8,7 @@ class StudentBlockReviewCard extends React.Component {
   };
 
   fetchSpecificStudentDetails = () => {
-    axios
+    return axios
       .get(
         `https://nc-student-tracker.herokuapp.com/api/students/${this.props.student._id}`
       )
@@ -16,11 +16,18 @@ class StudentBlockReviewCard extends React.Component {
         const blockCount = student.blockHistory.reduce((acc, curr) => {
           return curr.slug === this.props.block ? ++acc : acc;
         }, 0);
-        this.setState({ blockCount });
+        return this.setState({ blockCount });
       });
   };
   componentDidMount = () => {
     this.fetchSpecificStudentDetails();
+  };
+  componentDidUpdate = (prevProps, prevStates) => {
+    if (this.props.blockUnderReview !== prevProps.blockUnderReview) {
+      return this.fetchSpecificStudentDetails().then(() => {
+        return this.setState({ buttonState: null });
+      });
+    }
   };
 
   handleChange = (status, student_id) => {
@@ -35,7 +42,7 @@ class StudentBlockReviewCard extends React.Component {
     return (
       <div>
         <h3>{student.name}</h3>
-        <h4>block count: {blockCount}</h4>
+        <h4>block sit count: {blockCount}</h4>
         <form>
           <label>
             Resit
