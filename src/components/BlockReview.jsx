@@ -47,22 +47,28 @@ class BlockReview extends Component {
 
   handleSubmit = event => {
     event.preventDefault();
-    const { students } = this.state;
+    const { students, block } = this.state;
     const allStudentsReviewed = students.every(student => {
       return student.blockStatus;
     });
     if (allStudentsReviewed) {
-      students.forEach(student => {
-        this.patchStudent(student._id, student.BlockStatus);
+      const studentPromises = students.map(student => {
+        return this.patchStudent(student._id, student.blockStatus);
+      });
+      return Promise.all(studentPromises).then(patchedStudents => {
+        this.filterByBlock(block);
       });
     }
   };
 
   patchStudent = (student_id, progress) => {
-    axios.patch(
-      `https://nc-student-tracker.herokuapp.com/api/students${student_id}`,
-      { params: { progress } }
-    );
+    return axios
+      .patch(
+        `https://nc-student-tracker.herokuapp.com/api/students/${student_id}?progress=${progress}`
+      )
+      .then(studentData => {
+        return studentData.data.student;
+      });
   };
 
   render() {

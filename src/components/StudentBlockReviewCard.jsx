@@ -3,7 +3,8 @@ import axios from "axios";
 
 class StudentBlockReviewCard extends React.Component {
   state = {
-    blockCount: 0
+    blockCount: 0,
+    buttonState: null
   };
 
   fetchSpecificStudentDetails = () => {
@@ -22,25 +23,43 @@ class StudentBlockReviewCard extends React.Component {
     this.fetchSpecificStudentDetails();
   };
 
+  handleChange = (status, student_id) => {
+    this.setState({ buttonState: status });
+    this.props.setStudentReview(status, student_id);
+  };
+
   render() {
-    const { setStudentReview, student } = this.props;
-    const { blockCount } = this.state;
+    const { student } = this.props;
+    const { blockCount, buttonState } = this.state;
+    const { handleChange } = this;
     return (
       <div>
         <h3>{student.name}</h3>
         <h4>block count: {blockCount}</h4>
-        <form
-          onChange={event => {
-            setStudentReview(event.target.id, student._id);
-          }}
-        >
+        <form>
           <label>
             Resit
-            <input type="radio" id="false" name="reviewStatus"></input>
+            <input
+              type="radio"
+              id="false"
+              checked={buttonState === "false"}
+              name="reviewStatus"
+              onChange={event => {
+                handleChange(event.target.id, student._id);
+              }}
+            ></input>
           </label>
           <label>
             Pass
-            <input type="radio" id="true" name="reviewStatus"></input>
+            <input
+              type="radio"
+              id="true"
+              checked={buttonState === "true"}
+              name="reviewStatus"
+              onChange={event => {
+                handleChange(event.target.id, student._id);
+              }}
+            ></input>
           </label>
         </form>
       </div>
