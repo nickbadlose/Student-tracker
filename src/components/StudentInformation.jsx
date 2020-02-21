@@ -36,6 +36,13 @@ class StudentInformation extends Component {
     this.fetchStudent();
   }
 
+  componentDidUpdate(prevProps, prevState) {
+    console.log(prevProps, this.props);
+    if (prevProps.uri !== this.props.uri) {
+      this.fetchStudent();
+    }
+  }
+
   fetchStudent = () => {
     axios
       .get(

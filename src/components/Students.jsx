@@ -4,6 +4,8 @@ import axios from "axios";
 import BlockFilterForm from "./BlockFilterForm";
 import AddStudentForm from "./AddStudentForm";
 import { navigate } from "@reach/router";
+import StudentInformation from "./StudentInformation";
+import { Router } from "@reach/router";
 
 class Students extends Component {
   state = {
@@ -20,6 +22,9 @@ class Students extends Component {
         <AddStudentForm postStudent={postStudent} />
         <BlockFilterForm fetchStudents={fetchStudents} />
         <aside>Total count:{totalCount}</aside>
+        <Router>
+          <StudentInformation path="/:student_id" />
+        </Router>
         <ul>
           {" "}
           {students.map(student => {

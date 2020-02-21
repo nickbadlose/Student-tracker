@@ -10,6 +10,7 @@ function Header(props) {
           <Link to="/">Home</Link>
           <Link to="/students">Students</Link>
           <Link to="/blocks">Block Review</Link>
+          <Link to="/data">Data Review</Link>
         </li>
       </nav>
     </header>

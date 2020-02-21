@@ -5,8 +5,8 @@ import Header from "./components/Header";
 import Homepage from "./components/Homepage";
 import Students from "./components/Students";
 import { Router } from "@reach/router";
-import StudentInformation from "./components/StudentInformation";
 import BlockReview from "./components/BlockReview";
+import StudentData from "./components/StudentData";
 
 function App() {
   return (
@@ -14,9 +14,9 @@ function App() {
       <Header />
       <Router>
         <Homepage path="/" />
-        <Students path="/students" />
-        <StudentInformation path="/students/:student_id" />
+        <Students path="/students/*" />
         <BlockReview path="/blocks" />
+        <StudentData path="/data" />
       </Router>
     </main>
   );
